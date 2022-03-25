@@ -34,7 +34,7 @@ func (t *threadGroupService) GetActiveThreadGroups(conn *gorm.DB) ([]models.Thre
 
 func (t *threadGroupService) GetActiveThreadGroupsByNodeID(ctx context.Context, nodeID int) ([]models.ThreadGroup, *errors.Error) {
 
-	conn := db.ClearingDB.NewConnection(ctx)
+	conn := db.EwDB.NewConnection(ctx)
 	groups := make([]models.ThreadGroup, 0)
 	err := conn.Raw("select * from t_thread_group where ew_node=? and life_cycle=? ", nodeID, enums.ThreadGroupLifeCycleActive).Scan(&groups).Error
 	if err != nil {

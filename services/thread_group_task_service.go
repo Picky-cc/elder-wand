@@ -74,7 +74,7 @@ limit ?
 	params = append(params, threadGroupID, fromTaskID, enums.TaskLifeCycleActive, tt, enums.LifeCycleActive, enums.ThreadGroupLifeCycleActive, limitCount)
 
 	results := make([]dbUtils.SFID, 0)
-	conn := db.ClearingDB.NewConnection(ctx)
+	conn := db.EwDB.NewConnection(ctx)
 	err := conn.Raw(sql, params...).Pluck("task_id", &results).Error
 	if err != nil {
 		return results, errors.NewDBError(err.Error())

@@ -29,7 +29,7 @@ func (a *taskPluginService) GetTaskPluginListByTask(ctx context.Context, taskID 
 
 	sql := "select * from t_task_plugin where task_id=? and life_cycle=? and next_query_time <= ? "
 
-	conn := db.ClearingDB.NewConnection(ctx)
+	conn := db.EwDB.NewConnection(ctx)
 	err := conn.Raw(sql, taskID, lifeCycle, queryTime).Scan(&results).Error
 	if err != nil {
 		return nil, errors.NewDBError(err.Error())

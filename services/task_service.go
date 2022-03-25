@@ -25,7 +25,7 @@ func (a *taskService) Create(conn *gorm.DB, task models.Task) *errors.Error {
 
 func (a *taskService) GetTaskByProjectAndTaskType(ctx context.Context, projectID dbUtils.SFID, tType enums.TaskType) (*models.Task, *errors.Error) {
 	task := models.Task{}
-	conn := db.ClearingDB.NewConnection(ctx)
+	conn := db.EwDB.NewConnection(ctx)
 
 	sql := ` select * from t_task where project_id = ? and type = ? `
 	conn = conn.Raw(sql, projectID, tType).Find(&task)
@@ -39,7 +39,7 @@ func (a *taskService) GetTaskByProjectAndTaskType(ctx context.Context, projectID
 
 func (a *taskService) GetTaskByID(ctx context.Context, ID dbUtils.SFID) (*models.Task, *errors.Error) {
 	task := models.Task{}
-	conn := db.ClearingDB.NewConnection(ctx)
+	conn := db.EwDB.NewConnection(ctx)
 
 	sql := ` select * from t_task where id=? `
 	conn = conn.Raw(sql, ID).Find(&task)
@@ -53,7 +53,7 @@ func (a *taskService) GetTaskByID(ctx context.Context, ID dbUtils.SFID) (*models
 
 func (a *taskService) GetActiveTaskByID(ctx context.Context, ID dbUtils.SFID, lifeCycle enums.TaskLifeCycle) (*models.Task, *errors.Error) {
 	task := models.Task{}
-	conn := db.ClearingDB.NewConnection(ctx)
+	conn := db.EwDB.NewConnection(ctx)
 
 	sql := ` select * from t_task where id=? and life_cycle = ? `
 	conn = conn.Raw(sql, ID, lifeCycle).Find(&task)

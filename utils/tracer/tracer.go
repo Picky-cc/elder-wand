@@ -38,7 +38,7 @@ func (c *TracerContext) GetContext() context.Context {
 
 func (c *TracerContext) StartTransaction(name, transactionType string) *apm.Transaction {
 	tx := Tracer.StartTransaction(name, "plugin")
-	tx.Context.SetLabel("TORNADO_NODE_ID", settings.Config.EwNodeID)
+	tx.Context.SetLabel("EW_NODE_ID", settings.Config.EwNodeID)
 	ctx := c.GetContext()
 	c.ctx = apm.ContextWithTransaction(ctx, tx)
 	return tx

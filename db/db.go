@@ -45,7 +45,7 @@ func (*dbLogger) Print(v ...interface{}) {
 	}
 }
 
-var ClearingDB *DBInstance
+var EwDB *DBInstance
 
 func (instance *DBInstance) NewConnection(ctx context.Context) *gorm.DB {
 	db := instance.gdb.New()
@@ -99,11 +99,11 @@ func updateTimeStampForUpdateCallback(scope *gorm.Scope) {
 
 func Init() {
 	dbUtils.Init()
-	ClearingDB = &DBInstance{}
-	ClearingDB.Init(&settings.Config.DBConfig)
+	EwDB = &DBInstance{}
+	EwDB.Init(&settings.Config.DBConfig)
 
-	initDefaultThreadGroup(ClearingDB.gdb)
-	resetThreadGroupTaskStatus(ClearingDB.gdb, settings.Config.EwNodeID)
+	initDefaultThreadGroup(EwDB.gdb)
+	resetThreadGroupTaskStatus(EwDB.gdb, settings.Config.EwNodeID)
 }
 
 func resetThreadGroupTaskStatus(conn *gorm.DB, ewNodeID int) (int64, *errors.Error) {

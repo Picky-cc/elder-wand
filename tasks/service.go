@@ -131,7 +131,7 @@ func (g *threadGroup) runDataService(task *models.Task, taskPlugin *models.TaskP
 	defer g.HandlerPanicError()
 	defer func() {
 		now := time.Now()
-		_, _ = services.TaskPluginService.UpdateTaskPluginQueryTime(db.ClearingDB.NewConnection(context.TODO()), taskPlugin.ID, now)
+		_, _ = services.TaskPluginService.UpdateTaskPluginQueryTime(db.EwDB.NewConnection(context.TODO()), taskPlugin.ID, now)
 	}()
 
 	log.Infof("[threadGroup %s] start to run service: %d, plugin: %d", g.group.Name, taskPlugin.ID, taskPlugin.ServicePlugin)
@@ -195,7 +195,7 @@ func (g *threadGroup) runProducer() {
 			if taskIDs[i] > fromTaskID {
 				fromTaskID = taskID
 			}
-			ret, err := services.ThreadGroupTaskService.CompareAndSwapStatus(db.ClearingDB.NewConnection(context.TODO()), g.group.ID, taskID, enums.ThreadTaskStatusWaiting, enums.ThreadTaskStatusRunning)
+			ret, err := services.ThreadGroupTaskService.CompareAndSwapStatus(db.EwDB.NewConnection(context.TODO()), g.group.ID, taskID, enums.ThreadTaskStatusWaiting, enums.ThreadTaskStatusRunning)
 			if err != nil {
 				continue
 			}
@@ -205,7 +205,7 @@ func (g *threadGroup) runProducer() {
 			}
 			task, err := services.TaskService.GetTaskByID(context.TODO(), taskID)
 			if err != nil {
-				ret, _ = services.ThreadGroupTaskService.CompareAndSwapStatus(db.ClearingDB.NewConnection(context.TODO()), g.group.ID, taskID, enums.ThreadTaskStatusRunning, enums.ThreadTaskStatusWaiting)
+				ret, _ = services.ThreadGroupTaskService.CompareAndSwapStatus(db.EwDB.NewConnection(context.TODO()), g.group.ID, taskID, enums.ThreadTaskStatusRunning, enums.ThreadTaskStatusWaiting)
 				if !ret {
 					log.Errorf("[threadGroup %s] compareAndSwapStatus failed. (%d, %d, %d)", g.group.Name, taskID, enums.ThreadTaskStatusWaiting, enums.ThreadTaskStatusRunning)
 				}
@@ -214,7 +214,7 @@ func (g *threadGroup) runProducer() {
 			now := time.Now()
 			serviceList, err := services.TaskPluginService.GetTaskPluginListByTask(context.TODO(), taskID, enums.LifeCycleActive, &now)
 			if err != nil {
-				ret, _ = services.ThreadGroupTaskService.CompareAndSwapStatus(db.ClearingDB.NewConnection(context.TODO()), g.group.ID, taskID, enums.ThreadTaskStatusRunning, enums.ThreadTaskStatusWaiting)
+				ret, _ = services.ThreadGroupTaskService.CompareAndSwapStatus(db.EwDB.NewConnection(context.TODO()), g.group.ID, taskID, enums.ThreadTaskStatusRunning, enums.ThreadTaskStatusWaiting)
 				if !ret {
 					log.Errorf("[threadGroup %s] compareAndSwapStatus failed. (%d, %d, %d)", g.group.Name, taskID, enums.ThreadTaskStatusWaiting, enums.ThreadTaskStatusRunning)
 				}
@@ -229,7 +229,7 @@ func (g *threadGroup) runProducer() {
 			}
 			go func(wg *sync.WaitGroup) {
 				wg.Wait()
-				ret, _ = services.ThreadGroupTaskService.CompareAndSwapStatus(db.ClearingDB.NewConnection(context.TODO()), g.group.ID, taskID, enums.ThreadTaskStatusRunning, enums.ThreadTaskStatusWaiting)
+				ret, _ = services.ThreadGroupTaskService.CompareAndSwapStatus(db.EwDB.NewConnection(context.TODO()), g.group.ID, taskID, enums.ThreadTaskStatusRunning, enums.ThreadTaskStatusWaiting)
 				if !ret {
 					log.Errorf("[threadGroup %s] compareAndSwapStatus failed. (%d, %d, %d)", g.group.Name, taskID, enums.ThreadTaskStatusWaiting, enums.ThreadTaskStatusRunning)
 				}
@@ -249,7 +249,7 @@ func (g *threadGroup) NumberOfRunningTasks() int {
 	sql := `select count(*) count from t_thread_group_task where thread_group_id=? and status=?`
 
 	var count []int
-	conn := db.ClearingDB.NewConnection(context.TODO())
+	conn := db.EwDB.NewConnection(context.TODO())
 	err := conn.Raw(sql, g.group.ID, enums.ThreadTaskStatusRunning).Pluck("count", &count).Error
 	if err != nil || len(count) == 0 {
 		return -1
