@@ -25,7 +25,7 @@ func (t *threadGroupService) Create(conn *gorm.DB, threadGroup models.ThreadGrou
 func (t *threadGroupService) GetActiveThreadGroups(conn *gorm.DB) ([]models.ThreadGroup, *errors.Error) {
 
 	groups := make([]models.ThreadGroup, 0)
-	err := conn.Raw("select * from t_clearing_thread_group where life_cycle=? ", enums.ThreadGroupLifeCycleActive).Scan(&groups).Error
+	err := conn.Raw("select * from t_thread_group where life_cycle=? ", enums.ThreadGroupLifeCycleActive).Scan(&groups).Error
 	if err != nil {
 		return groups, errors.NewDBError(err.Error())
 	}
@@ -36,7 +36,7 @@ func (t *threadGroupService) GetActiveThreadGroupsByNodeID(ctx context.Context, 
 
 	conn := db.ClearingDB.NewConnection(ctx)
 	groups := make([]models.ThreadGroup, 0)
-	err := conn.Raw("select * from t_clearing_thread_group where tornado_node=? and life_cycle=? ", nodeID, enums.ThreadGroupLifeCycleActive).Scan(&groups).Error
+	err := conn.Raw("select * from t_thread_group where ew_node=? and life_cycle=? ", nodeID, enums.ThreadGroupLifeCycleActive).Scan(&groups).Error
 	if err != nil {
 		return groups, errors.NewDBError(err.Error())
 	}

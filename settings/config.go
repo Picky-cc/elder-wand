@@ -18,19 +18,19 @@ type DBConfigure struct {
 }
 
 type appConfig struct {
-	AppName          string
-	HttpPort         string
-	RunMode          string
-	LogsPath         string
-	BeegoLogName     string
-	LogName          string
-	ErrorLogName     string
-	FileMaxSize      int
-	MaxAge           int
-	DBLog            bool
-	DBClearingConfig DBConfigure
-	EwNodeID         int
-	EnableAPM        bool
+	AppName      string
+	HttpPort     string
+	RunMode      string
+	LogsPath     string
+	BeegoLogName string
+	LogName      string
+	ErrorLogName string
+	FileMaxSize  int
+	MaxAge       int
+	DBLog        bool
+	DBConfig     DBConfigure
+	EwNodeID     int
+	EnableAPM    bool
 }
 
 func (config *appConfig) init() {
@@ -45,13 +45,13 @@ func (config *appConfig) init() {
 	config.MaxAge = beego.AppConfig.DefaultInt("MaxAge", 14)
 	config.DBLog = beego.AppConfig.DefaultBool("DBLog", false)
 
-	config.DBClearingConfig.DriverName = beego.AppConfig.String("DBClearingDriverName")
-	config.DBClearingConfig.ConnectionUri = beego.AppConfig.String("DBClearingConnectionUri")
-	config.DBClearingConfig.MaxIdle = beego.AppConfig.DefaultInt("DBClearingMaxIdle", 20)
-	config.DBClearingConfig.MaxOpen = beego.AppConfig.DefaultInt("DBClearingMaxOpen", 100)
-	config.DBClearingConfig.ConnMaxLeftTime = beego.AppConfig.DefaultInt("DBClearingMaxConnLeftTime", 1800000000000)
-	config.DBClearingConfig.BatchInsertRecordsCount = beego.AppConfig.DefaultInt("DBClearingBatchInsertRecordsCount", 500)
-	config.DBClearingConfig.RunMigration = beego.AppConfig.DefaultBool("DBClearingRunMigration", false)
+	config.DBConfig.DriverName = beego.AppConfig.String("DBDriverName")
+	config.DBConfig.ConnectionUri = beego.AppConfig.String("DBConnectionUri")
+	config.DBConfig.MaxIdle = beego.AppConfig.DefaultInt("DBMaxIdle", 20)
+	config.DBConfig.MaxOpen = beego.AppConfig.DefaultInt("DBMaxOpen", 100)
+	config.DBConfig.ConnMaxLeftTime = beego.AppConfig.DefaultInt("DBMaxConnLeftTime", 1800000000000)
+	config.DBConfig.BatchInsertRecordsCount = beego.AppConfig.DefaultInt("DBBatchInsertRecordsCount", 500)
+	config.DBConfig.RunMigration = beego.AppConfig.DefaultBool("DBRunMigration", false)
 
 	config.EwNodeID = beego.AppConfig.DefaultInt("EwNodeID", 0)
 	config.EnableAPM = beego.AppConfig.DefaultBool("EnableAPM", false)

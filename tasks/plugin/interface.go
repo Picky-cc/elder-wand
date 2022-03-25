@@ -7,6 +7,6 @@ import (
 )
 
 type ServicePlugin interface {
-	Process(agreement *models.Agreement, service *models.AgreementDataService) *errors.Error
+	Process(task *models.Task, taskPlugin *models.TaskPlugin) *errors.Error
 	InitTracerContext() *tracer.TracerContext
 }

@@ -15,5 +15,5 @@ type ThreadGroup struct {
 }
 
 func (*ThreadGroup) TableName() string {
-	return "t_clearing_thread_group"
+	return "t_thread_group"
 }

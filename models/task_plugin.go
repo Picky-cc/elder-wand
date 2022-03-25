@@ -6,10 +6,9 @@ import (
 	"time"
 )
 
-// 资金池任务表
-type AgreementDataService struct {
+type TaskPlugin struct {
 	BaseModel
-	AgreementID   dbUtils.SFID          //清算池ID
+	TaskID        dbUtils.SFID          //任务ID
 	ServicePlugin enums.ServicePlugin   //任务类型
 	NextQueryTime *time.Time            //下次查询时间
 	LastQueryTime time.Time             //最后一次查询时间
@@ -18,6 +17,6 @@ type AgreementDataService struct {
 	Params        string                //配置参数
 }
 
-func (*AgreementDataService) TableName() string {
-	return "t_clearing_agreement_data_service"
+func (*TaskPlugin) TableName() string {
+	return "t_task_plugin"
 }

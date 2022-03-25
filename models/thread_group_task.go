@@ -10,9 +10,9 @@ type ThreadGroupTask struct {
 	BaseModel
 	ThreadGroupID dbUtils.SFID                // 线程组ID
 	Status        enums.ThreadGroupTaskStatus // 任务状态
-	AgreementID   dbUtils.SFID                // 协议号
+	TaskID        dbUtils.SFID                // 任务ID
 }
 
 func (*ThreadGroupTask) TableName() string {
-	return "t_clearing_thread_group_task"
+	return "t_thread_group_task"
 }

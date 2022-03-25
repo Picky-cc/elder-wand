@@ -17,8 +17,8 @@ type FreedomCashFlowAmountMatchingTemporaryContext struct {
 	DeliveryTransactionItemList []interface{}
 }
 
-func (auditor *PluginFreedomCashFlowAmountMatchingAuditor) Process(agreement *models.Agreement, dataService *models.AgreementDataService) *errors.Error {
-	log.Infof("[PluginFreedomCashFlowAmountMatchingAuditor] agreement: %d, service: %d start", agreement.ID, dataService.ID)
-	defer log.Infof("[PluginFreedomCashFlowAmountMatchingAuditor] agreement: %d, service: %d end", agreement.ID, dataService.ID)
+func (auditor *PluginFreedomCashFlowAmountMatchingAuditor) Process(task *models.Task, taskPlugin *models.TaskPlugin) *errors.Error {
+	log.Infof("[PluginFreedomCashFlowAmountMatchingAuditor] task: %d, plugin: %d start", task.ID, taskPlugin.ID)
+	defer log.Infof("[PluginFreedomCashFlowAmountMatchingAuditor] task: %d, plugin: %d end", task.ID, taskPlugin.ID)
 	return nil
 }

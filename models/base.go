@@ -13,7 +13,7 @@ type BaseModel struct {
 	Deleted *time.Time   `gorm:"type:datetime(6)" faker:"-"`
 }
 
-// gorm interface, call func before model create
+// BeforeCreate gorm interface, call func before model create
 func (m *BaseModel) BeforeCreate() (err error) {
 	if !m.ID.IsValid() {
 		m.ID = dbUtils.GenerateID()

@@ -100,17 +100,17 @@ func updateTimeStampForUpdateCallback(scope *gorm.Scope) {
 func Init() {
 	dbUtils.Init()
 	ClearingDB = &DBInstance{}
-	ClearingDB.Init(&settings.Config.DBClearingConfig)
+	ClearingDB.Init(&settings.Config.DBConfig)
 
 	initDefaultThreadGroup(ClearingDB.gdb)
 	resetThreadGroupTaskStatus(ClearingDB.gdb, settings.Config.EwNodeID)
 }
 
-func resetThreadGroupTaskStatus(conn *gorm.DB, tornadoNodeID int) (int64, *errors.Error) {
+func resetThreadGroupTaskStatus(conn *gorm.DB, ewNodeID int) (int64, *errors.Error) {
 	sql := `
-	update t_clearing_thread_group_task set status=?, updated=now() where status=? and thread_group_id in (select id from t_clearing_thread_group where tornado_node=?)
+	update t_thread_group_task set status=?, updated=now() where status=? and thread_group_id in (select id from t_thread_group where ew_node=?)
 `
-	conn = conn.Exec(sql, enums.ThreadTaskStatusWaiting, enums.ThreadTaskStatusRunning, fmt.Sprint(tornadoNodeID))
+	conn = conn.Exec(sql, enums.ThreadTaskStatusWaiting, enums.ThreadTaskStatusRunning, fmt.Sprint(ewNodeID))
 	if conn.Error != nil {
 		return 0, errors.NewDBError(conn.Error.Error())
 	}

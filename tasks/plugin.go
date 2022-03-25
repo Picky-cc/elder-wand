@@ -8,11 +8,8 @@ import (
 )
 
 var ServicePlugins = map[enums.ServicePlugin]base.ServicePlugin{
-	enums.PluginFreedomCashFlowAmountMatching:   &auditors.PluginFreedomCashFlowAmountMatchingAuditor{},
-	enums.PluginMultiAmountAndAccountNoMatching: &auditors.PluginMultiAmountAndAccountNoMatchingAuditor{},
-	enums.PluginMultiAmountMatching:             &auditors.PluginMultiAmountMatchingAuditor{},
-	enums.PluginMultiCashFlowPrintMatching:      &auditors.PluginMultiCashFlowPrintMatchingAuditor{},
-	enums.PluginMultiReceiptsCashMatching:       &auditors.PluginMultiReceiptsCashMatchingAuditor{},
+	enums.PluginOne: &auditors.PluginFreedomCashFlowAmountMatchingAuditor{},
+	enums.PluginTwo: &auditors.PluginMultiAmountAndAccountNoMatchingAuditor{},
 }
 
 func init() {
